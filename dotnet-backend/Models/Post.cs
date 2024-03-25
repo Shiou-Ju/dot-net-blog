@@ -1,3 +1,4 @@
+// TODO: implement DTO
 namespace dot_net_blog.Models
 {
     public class Post
