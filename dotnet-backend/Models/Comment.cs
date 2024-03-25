@@ -3,6 +3,7 @@ namespace dot_net_blog.Models
     using System;
     using System.ComponentModel.DataAnnotations;
     using Microsoft.EntityFrameworkCore;
+    using System.Text.Json.Serialization;
 
     public class Comment
     {
@@ -13,8 +14,11 @@ namespace dot_net_blog.Models
 
         [Required]
         public int PostId { get; set; }
-        [Required]
-        public Post Post { get; set; }
+        // TODO: maybe not required
+        // nullable
+        // [Required]
+        [JsonIgnore]
+        public Post? Post { get; set; }
 
         public Comment()
         {

@@ -7,7 +7,8 @@ namespace dot_net_blog.Models
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        // TODO: maybe only we need comment id?
+        public ICollection<Comment>? Comments { get; set; }
 
 
         public Post()
@@ -15,7 +16,7 @@ namespace dot_net_blog.Models
             Title = string.Empty;
             Content = string.Empty;
             CreatedAt = DateTime.Now;
-            Comments = [];
+            // Comments = [];
         }
     }
 
