@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: dotnetexamplepw
       POSTGRES_DB: dotnetexample
     ports:
-      - '5434:5434'
+      - "5434:5432"
 
 volumes:
   db-data:
