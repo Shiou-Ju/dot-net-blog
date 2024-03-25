@@ -50,3 +50,5 @@ obj/
 *.userprefs
 .mono/
 .DS_Store
+
+.fake

@@ -6,5 +6,13 @@ namespace dot_net_blog.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public Post()
+        {
+            Title = string.Empty;
+            Content = string.Empty;
+            CreatedAt = DateTime.Now;
+        }
     }
+
 }
