@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: dotnetexamplepw
+      POSTGRES_DB: dotnetexample
+    ports:
+      - '5434:5434'
+
+volumes:
+  db-data:
