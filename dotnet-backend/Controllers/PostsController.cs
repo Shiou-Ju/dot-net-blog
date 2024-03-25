@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using dot_net_blog.Data;
 using dot_net_blog.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace dot_net_blog.Controllers
 {
