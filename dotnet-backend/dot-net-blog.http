@@ -1,0 +1,6 @@
+@dot_net_blog_HostAddress = http://localhost:5285
+
+GET {{dot_net_blog_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
