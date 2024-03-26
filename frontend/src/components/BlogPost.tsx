@@ -5,6 +5,7 @@ import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export interface SingleBlogPost {
   id: number;
@@ -26,6 +27,12 @@ const BlogPost: React.FC<BlogPostProps> = ({
   onDelete,
   onEdit,
 }) => {
+  let navigate = useNavigate();
+
+  function goToPostDetail() {
+    navigate(`/post/${id}`);
+  }
+
   const formatDate = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
@@ -55,11 +62,14 @@ const BlogPost: React.FC<BlogPostProps> = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" onClick={handleEdit}>
+        <Button size="small" color="warning" onClick={handleEdit}>
           編輯
         </Button>
-        <Button size="small" color="secondary" onClick={handleDelete}>
+        <Button size="small" color="error" onClick={handleDelete}>
           刪除
+        </Button>
+        <Button size="small" color="info"  onClick={goToPostDetail}>
+          閱讀更多
         </Button>
       </CardActions>
     </Card>
