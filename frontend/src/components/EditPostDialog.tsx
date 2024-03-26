@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -6,29 +8,58 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { SingleBlogPost } from "./BlogPost";
 
-interface CreatePostDialogProps {
+interface EditPostDialogProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (post: { title: string; content: string }) => Promise<void>;
+  onSubmit: (post: SingleBlogPost) => Promise<void>;
+  initialPost?: SingleBlogPost;
 }
 
-export default function CreatePostDialog({
+export default function EditPostDialog({
   open,
   onClose,
   onSubmit,
-}: CreatePostDialogProps) {
+  initialPost,
+}: EditPostDialogProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [id, setId] = useState<number | null>(null);
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
+
+  const resetFields = () => {
+    setTitle("");
+    setContent("");
+    setId(null);
+    setCreatedAt(null);
+  };
 
   const handleSubmit = async () => {
-    await onSubmit({ title, content });
+    if (!id || !createdAt) {
+      console.error("no id or createdAt");
+      return;
+    }
+
+    await onSubmit({ title, content, id, createdAt });
+
+    resetFields();
   };
+
+  useEffect(() => {
+    if (initialPost) {
+      setTitle(initialPost.title);
+      setContent(initialPost.content);
+      setId(initialPost.id);
+      setCreatedAt(initialPost.createdAt);
+    } else {
+      resetFields();
+    }
+  }, [initialPost]);
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>新增文章</DialogTitle>
+      <DialogTitle>修改文章</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus

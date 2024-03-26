@@ -17,18 +17,32 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // local
 import BlogPost, { SingleBlogPost } from "./BlogPost";
 import CreatePostDialog from "./CreatePostDialog";
+import EditPostDialog from "./EditPostDialog";
 
 const defaultTheme = createTheme();
 
 export default function MainPage() {
   const [posts, setPosts] = useState<SingleBlogPost[]>([]);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openCreateDialog, setCreateOpenDialog] = useState(false);
 
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [editingPost, setEditingPost] = useState<SingleBlogPost | null>(null);
+
+  const handleOpenEditDialog = (post: SingleBlogPost) => {
+    setEditingPost(post);
+    setOpenEditDialog(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+    setEditingPost(null);
+  };
 
   const handleOpenConfirmDialog = (id: number) => {
     setSelectedPostId(id);
@@ -57,12 +71,12 @@ export default function MainPage() {
     setOpenSnackbar(false);
   };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const handleOpenCreateDialog = () => {
+    setCreateOpenDialog(true);
   };
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleCloseCreateDialog = () => {
+    setCreateOpenDialog(false);
   };
 
   const fetchPosts = async () => {
@@ -87,7 +101,7 @@ export default function MainPage() {
       await axios.post("http://localhost:5285/posts", newPost);
 
       fetchPosts();
-      handleCloseDialog();
+      handleCloseCreateDialog();
     } catch (error) {
       console.error("Failed to create post:", error);
     }
@@ -113,31 +127,34 @@ export default function MainPage() {
     }
   };
 
-  // TODO:
   const handleEditPost = (id: number) => {
-    // TODO: dialog open
-    console.log("Editing post with id:", id);
-    // TODO:PUT /posts/{id} API
+    const postToEdit = posts.find((post) => post.id === id);
+
+    if (postToEdit) {
+      handleOpenEditDialog(postToEdit);
+    }
   };
 
-  // const handleDeletePost = async (id: number) => {
-  //   try {
-  //     await axios.delete(`http://localhost:5285/posts/${id}`);
+  const handleSubmitEditPost = async (editedPost: SingleBlogPost) => {
+    if (!editingPost) return;
 
-  //     handleOpenSnackbar("Post deleted successfully");
-  //     const updatedPosts = posts.filter((post) => post.id !== id);
-  //     setPosts(updatedPosts);
-  //   } catch (error) {
-  //     console.error("無法成功刪除:", error);
-  //     handleOpenSnackbar("無法成功刪除");
-  //   }
-  // };
+    try {
+      await axios.put(`http://localhost:5285/posts/${editingPost.id}`, {
+        ...editedPost,
+        id: editingPost.id,
+      });
+
+      fetchPosts();
+      handleCloseEditDialog();
+    } catch (error) {
+      console.error("Failed to edit post:", error);
+    }
+  };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // TODO: add u to post
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -147,15 +164,23 @@ export default function MainPage() {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpenDialog}
+            onClick={handleOpenCreateDialog}
           >
             新增文章
           </Button>
 
           <CreatePostDialog
-            open={openDialog}
-            onClose={handleCloseDialog}
+            open={openCreateDialog}
+            onClose={handleCloseCreateDialog}
             onSubmit={handleSubmitNewPost}
+          />
+
+          <EditPostDialog
+            open={openEditDialog}
+            onClose={handleCloseEditDialog}
+            onSubmit={handleSubmitEditPost}
+            // TODO: not sure nullable
+            initialPost={editingPost!}
           />
 
           <Grid container spacing={4}>
