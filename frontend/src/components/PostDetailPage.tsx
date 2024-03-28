@@ -1,3 +1,6 @@
+// css
+import './PostDetailPage.css'
+// pkg
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -25,7 +28,9 @@ const PostDetailPage: React.FC = () => {
           <Typography variant="h4" component="h2" gutterBottom>
             {post.title}
           </Typography>
-          <Typography variant="body1">{post.content}</Typography>
+          <Typography variant="body1" className="preserve-whitespace">
+            {post.content}
+          </Typography>
           {/* TODO: comments */}
         </Box>
       ) : (
