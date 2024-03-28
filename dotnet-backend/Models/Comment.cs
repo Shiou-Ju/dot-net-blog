@@ -9,7 +9,9 @@ namespace dot_net_blog.Models
     public class Comment
     {
         public int Id { get; set; }
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
 
@@ -23,9 +25,11 @@ namespace dot_net_blog.Models
 
         public Comment()
         {
+            // TODO: maybe use oauth for user to add new comment
+            // and save auth here
             Username = "Anonymous";
             Content = string.Empty;
-            CreatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
             // TODO: maybe this will cause unexpected behavior
             // empty Post instance
             // to prevent nullable check?

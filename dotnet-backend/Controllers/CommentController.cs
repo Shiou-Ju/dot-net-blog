@@ -36,10 +36,40 @@ namespace dot_net_blog.Controllers
         [HttpPost]
         public async Task<ActionResult<Comment>> CreateComment(int postId, Comment comment)
         {
+
+            Console.WriteLine(ModelState);
+
+            // FIXME: is not validating
+            // if (!ModelState.IsValid)
+            // {
+            //     return BadRequest(ModelState);
+            // }
+
+            // more complicated way to validate
+            if (!ModelState.IsValid)
+            {
+                foreach (var modelStateKey in ModelState.Keys)
+                {
+                    if (ModelState.TryGetValue(modelStateKey, out var modelStateVal) && modelStateVal != null)
+                    {
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            Console.WriteLine($"Key: {modelStateKey}, Error: {error.ErrorMessage}");
+                        }
+                    }
+                }
+                return BadRequest(ModelState);
+            }
+
+
+
             if (!PostExists(postId))
             {
                 return NotFound();
             }
+
+            comment.CreatedAt = comment.CreatedAt.ToUniversalTime();
+
 
             comment.PostId = postId;
             _context.Comments.Add(comment);
