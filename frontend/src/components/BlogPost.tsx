@@ -50,6 +50,13 @@ const BlogPost: React.FC<BlogPostProps> = ({
     onEdit(id);
   };
 
+  const maxContentLength = 20;
+  const isContentToolong = content.length > maxContentLength;
+
+  const displayContent = isContentToolong
+    ? content.substring(0, maxContentLength) + "..."
+    : content;
+
   return (
     <Card sx={{ margin: "2rem 0" }}>
       <CardHeader
@@ -58,9 +65,10 @@ const BlogPost: React.FC<BlogPostProps> = ({
       />
       <CardContent>
         <Typography variant="body1" color="textSecondary" component="p">
-          {content}
+          {displayContent}
         </Typography>
       </CardContent>
+
       <CardActions>
         <Button size="small" color="warning" onClick={handleEdit}>
           編輯
@@ -68,7 +76,7 @@ const BlogPost: React.FC<BlogPostProps> = ({
         <Button size="small" color="error" onClick={handleDelete}>
           刪除
         </Button>
-        <Button size="small" color="info"  onClick={goToPostDetail}>
+        <Button size="small" color="info" onClick={goToPostDetail}>
           閱讀更多
         </Button>
       </CardActions>
