@@ -13,6 +13,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* TODO: navbar always on top */}
         <Route path="/" element={<MainPage />} />
         <Route path="/post/:id" element={<PostDetailPage />} />
       </Routes>

@@ -161,6 +161,7 @@ export default function MainPage() {
       <Container maxWidth="lg">
         {<h1>.Net Blog</h1>}
         <main>
+          {/* TODO: only shown when admin logs in */}
           <Button
             variant="contained"
             color="primary"
@@ -205,6 +206,7 @@ export default function MainPage() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        {/* TODO: to soft delete */}
         <DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

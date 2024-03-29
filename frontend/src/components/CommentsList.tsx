@@ -4,7 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { zhTW } from "date-fns/locale";
 import { List, ListItem, ListItemText, Divider } from "@mui/material";
 
-interface Comment {
+export interface Comment {
   id: number;
   username: string;
   content: string;
