@@ -11,8 +11,8 @@ import CommentsList from "./CommentsList";
 
 const PostDetailPage: React.FC = () => {
   let { id } = useParams<{ id: string }>();
-
   const [post, setPost] = useState<SingleBlogPost | null>(null);
+  const [refreshComments, setRefreshComments] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -44,10 +44,10 @@ const PostDetailPage: React.FC = () => {
           <AddCommentForm
             postId={post.id}
             onCommentAdded={() => {
-              // TODO: fetch new comment?
+              setRefreshComments((prev) => !prev);
             }}
           />
-          <CommentsList postId={post.id} />
+          <CommentsList postId={post.id} refresh={refreshComments} />
         </Box>
       )}
     </Container>

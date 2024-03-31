@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 import { zhTW } from "date-fns/locale";
@@ -30,6 +30,7 @@ export interface Comment {
 
 interface CommentsListProps {
   postId: number;
+  refresh: boolean;
 }
 
 const formatDateToNow = (dateString: string) => {
@@ -39,7 +40,7 @@ const formatDateToNow = (dateString: string) => {
   });
 };
 
-const CommentsList: React.FC<CommentsListProps> = ({ postId }) => {
+const CommentsList: React.FC<CommentsListProps> = ({ postId, refresh }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -53,16 +54,17 @@ const CommentsList: React.FC<CommentsListProps> = ({ postId }) => {
     setOpenConfirmDialog(true);
   };
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const response = await axios.get(
-        `http://localhost:5285/api/posts/${postId}/comments`
-      );
-      setComments(response.data);
-    };
-
-    fetchComments();
+  // TODO: use call back?
+  const fetchComments = useCallback(async () => {
+    const response = await axios.get(
+      `http://localhost:5285/api/posts/${postId}/comments`
+    );
+    setComments(response.data);
   }, [postId]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments, postId, refresh]);
 
   const handleEdit = () => {
     // TODO:
